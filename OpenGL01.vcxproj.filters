@@ -32,4 +32,8 @@
       <Filter>Source Files</Filter>
     </Image>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="3.3.shader.vs" />
+    <None Include="3.3.shader.fs" />
+  </ItemGroup>
 </Project>

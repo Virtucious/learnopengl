@@ -98,8 +98,29 @@ int main()
 	
 	if (data)
 	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_BYTE, data);
+		GLint internalformat = 0, format = 0;
+		switch (nrChannels)
+		{
+			case 1:
+			{
+				internalformat = format = GL_RED;
+				std::cout << "Case1" << std::endl;
+			}; break;
+				
+			case 3: {
+				internalformat = format = GL_RGB;
+				std::cout << "Case3" << std::endl;
+			}; break;
+
+			case 4: {
+				internalformat = format = GL_RGBA;
+				std::cout << "Case4" << std::endl;
+			}; break;
+		}
+		glTexImage2D(GL_TEXTURE_2D, 0, internalformat, width, height, 0, format, GL_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
+		std::cout << internalformat;
+		
 	}
 	else {
 		std::cout << "Failed to load image" << std::endl;

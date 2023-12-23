@@ -52,14 +52,14 @@ int main()
 		-0.5f,  0.5f, 0.0f,		1.0f, 1.0f, 0.0f,		0.0f, 1.0f,							//top left 
 	};
 
-	unsigned int indices[] = {
+	uint32_t indices[] = {
 		0, 1, 3,		//first triangle
 		1, 2, 3			//second triangle
 	};
 
-	unsigned int VBO;
-	unsigned int VAO;
-	unsigned int EBO;
+	uint32_t VBO;
+	uint32_t VAO;
+	uint32_t EBO;
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
 	glGenBuffers(1, &EBO);
@@ -84,7 +84,7 @@ int main()
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 	glEnableVertexAttribArray(2);
 
-	unsigned int texture;
+	uint32_t texture;
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
 	//set the texture wrapping/filter options (on the currently bound texture object)
@@ -123,6 +123,7 @@ int main()
 	}
 
 	glfwTerminate();
+	glfwDestroyWindow;
 	return 0;
 }
 

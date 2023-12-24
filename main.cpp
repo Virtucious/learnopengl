@@ -1,4 +1,4 @@
-#include <glad.h>
+#include "LibrariesThirdParty/include/glad.h"
 #include <glfw3.h>
 #include <iostream>
 #include "shader.h"

@@ -71,12 +71,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\MyProjects\learnopengl\LibrariesThirdParty\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\MyProjects\learnopengl\LibrariesThirdParty\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)LibrariesThirdParty\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)LibrariesThirdParty\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\MyProjects\learnopengl\LibrariesThirdParty\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\MyProjects\learnopengl\LibrariesThirdParty\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)LibrariesThirdParty\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)LibrariesThirdParty\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -137,7 +137,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="LibrariesThirdParty\src\glad.c" />
+    <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>

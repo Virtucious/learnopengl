@@ -40,7 +40,7 @@ int main()
 
 	glViewport(0, 0, 800, 600);
 
-	Shader ourShader("3.3.shader.vs", "3.3.shader.fs");
+	Shader ourShader("3.3.shader.vert", "3.3.shader.frag");
 
 
 	//Vertex Input
@@ -84,9 +84,12 @@ int main()
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 	glEnableVertexAttribArray(2);
 
-	uint32_t texture;
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
+	uint32_t texture1;
+	uint32_t texture2;
+	
+	//TEXTURE 1
+	glGenTextures(1, &texture1);
+	glBindTexture(GL_TEXTURE_2D, texture1);
 	//set the texture wrapping/filter options (on the currently bound texture object)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -98,34 +101,33 @@ int main()
 	
 	if (data)
 	{
-		GLint internalformat = 0, format = 0;
-		switch (nrChannels)
-		{
-			case 1:
-			{
-				internalformat = format = GL_RED;
-				std::cout << "Case1" << std::endl;
-			}; break;
-				
-			case 3: {
-				internalformat = format = GL_RGB;
-				std::cout << "Case3" << std::endl;
-			}; break;
-
-			case 4: {
-				internalformat = format = GL_RGBA;
-				std::cout << "Case4" << std::endl;
-			}; break;
-		}
-		glTexImage2D(GL_TEXTURE_2D, 0, internalformat, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
-		std::cout << internalformat;
-		
 	}
-	else {
-		std::cout << "Failed to load image" << std::endl;
-	}
+	
 	stbi_image_free(data);
+		
+	//TEXTURE 2
+	glGenTextures(1, &texture2);
+	glBindTexture(GL_TEXTURE_2D, texture2);
+	//set the texture wrapping/filter options
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	stbi_set_flip_vertically_on_load(true);
+	data = stbi_load("awesomeface.png", &width, &height, &nrChannels, 0);
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+
+	ourShader.use();
+	ourShader.setInt("texture1", 0);
+	ourShader.setInt("texture2", 1);
+	
 
 	while(!glfwWindowShouldClose(window))
 	{
@@ -134,7 +136,10 @@ int main()
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		glBindTexture(GL_TEXTURE_2D, texture);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texture1);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, texture2);
 		
 		ourShader.use();
 		glBindVertexArray(VAO);
@@ -143,6 +148,9 @@ int main()
 		glfwPollEvents();
 	}
 
+	glDeleteVertexArrays(1, &VAO);
+	glDeleteBuffers(1, &VBO);
+	glDeleteBuffers(1, &EBO);
 
 	glfwTerminate();
 	glfwDestroyWindow;

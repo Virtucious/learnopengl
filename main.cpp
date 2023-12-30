@@ -30,8 +30,8 @@ int main()
 		glfwTerminate();
 		return -1;
 	}
+	
 	glfwMakeContextCurrent(window);
-
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
 
@@ -103,6 +103,10 @@ int main()
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
+	else
+	{
+		std::cout << "FAILED TO LOAD THE TEXTURE" << std::endl;
+	}
 	
 	stbi_image_free(data);
 		
@@ -121,6 +125,10 @@ int main()
 	{
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "FAILED TO LOAD THE TEXTURE" << std::endl;
 	}
 
 	ourShader.use();
@@ -143,13 +151,22 @@ int main()
 		glBindTexture(GL_TEXTURE_2D, texture2);
 		
 		//create transformations
-		glm::mat4 transform = glm::mat4(1.0f);
-		transform = glm::translate(transform, glm::vec3(0.5f, -0.5f, 0.0f));
-		transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+		glm::mat4 model = glm::mat4(1.0f);
+		glm::mat4 view = glm::mat4(1.0f);
+		glm::mat4 projection = glm::mat4(1.0f);
+		model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+		projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 
-		ourShader.use();
-		uint32_t transformLoc = glGetUniformLocation(ourShader.ID, "transform");
-		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+		//retrieve the matrix uniform locations
+		uint32_t modelLoc = glGetUniformLocation(ourShader.ID, "model");
+		uint32_t viewLoc = glGetUniformLocation(ourShader.ID, "view");
+
+		//pass them to the shaders
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
+
+		ourShader.setMat4("projection", projection);
 
 		glBindVertexArray(VAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

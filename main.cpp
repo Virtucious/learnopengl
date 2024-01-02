@@ -10,6 +10,7 @@
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 
 glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
@@ -17,6 +18,13 @@ glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
 float deltaTime = 0.0f;		//Time between current frame and last frame
 float lastFrame = 0.0f;		//Time of last frame
+
+float lastX = 400;
+float lastY = 300;
+float yaw = -90.0f;
+float pitch = 0.0f;
+
+bool firstMouse = true;
 
 int main()
 {
@@ -26,8 +34,6 @@ int main()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-	
 
 	//Create a window object
 	GLFWwindow* window = glfwCreateWindow(800, 600, "LearnOpenGL", NULL, NULL);
@@ -40,7 +46,7 @@ int main()
 	
 	glfwMakeContextCurrent(window);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
@@ -52,11 +58,7 @@ int main()
 
 	Shader ourShader("3.3.shader.vert", "3.3.shader.frag");
 
-
 	//Vertex Input
-
-
-
 	float vertices[] = {
 		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 		 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
@@ -114,7 +116,6 @@ int main()
 	glm::vec3(-1.3f,  1.0f, -1.5f)
 	};
 
-
 	uint32_t indices[] = {
 		0, 1, 3,		//first triangle
 		1, 2, 3			//second triangle
@@ -146,6 +147,7 @@ int main()
 	uint32_t texture1;
 	uint32_t texture2;
 	
+	//---------------------------------------------------------------------------------------------------
 	//TEXTURE 1
 	glGenTextures(1, &texture1);
 	glBindTexture(GL_TEXTURE_2D, texture1);
@@ -169,6 +171,7 @@ int main()
 	}
 	
 	stbi_image_free(data);
+	//---------------------------------------------------------------------------------------------------
 		
 	//TEXTURE 2
 	glGenTextures(1, &texture2);
@@ -190,6 +193,8 @@ int main()
 	{
 		std::cout << "FAILED TO LOAD THE TEXTURE" << std::endl;
 	}
+	stbi_image_free(data);
+	//----------------------------------------------------------------------------------------------------
 
 	ourShader.use();
 	ourShader.setInt("texture1", 0);
@@ -203,6 +208,7 @@ int main()
 	while (!glfwWindowShouldClose(window))
 	{
 		processInput(window);
+		glfwSetCursorPosCallback(window, mouse_callback);
 
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -278,4 +284,41 @@ void processInput(GLFWwindow* window)
 	{
 		cameraPos += cameraSpeed * glm::normalize(glm::cross(cameraFront, cameraUp));
 	}
+}
+
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+	if (firstMouse)
+	{
+		lastX = xpos;
+		lastY = ypos;
+		firstMouse = false;
+	}
+
+	float xOffset = xpos - lastX;
+	float yOffset = ypos - lastY;
+	lastX = xpos;
+	lastY = ypos;
+
+	const float sensitivity = 0.1f;
+	xOffset *= sensitivity;
+	yOffset *= sensitivity;
+
+	yaw += xOffset;
+	pitch += yOffset;
+
+	if (pitch > 89.0f)
+	{
+		pitch = 89.0f;
+	}
+	if (pitch < -89.0f)
+	{
+		pitch = -89.0f;
+	}
+
+	glm::vec3 direction;
+	direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+	direction.y = -sin(glm::radians(pitch));
+	direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+	cameraFront = glm::normalize(direction);
 }

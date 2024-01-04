@@ -29,6 +29,9 @@
     <ClInclude Include="stb_image.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="camera.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="container.jpg">
@@ -41,5 +44,9 @@
   <ItemGroup>
     <None Include="3.3.shader.vert" />
     <None Include="3.3.shader.frag" />
+    <None Include="lightingShader.vert" />
+    <None Include="lightingShader.frag" />
+    <None Include="lightCubeShader.vert" />
+    <None Include="lightCubeShader.frag" />
   </ItemGroup>
 </Project>

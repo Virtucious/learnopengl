@@ -141,6 +141,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="camera.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="stb_image.h" />
   </ItemGroup>
@@ -151,6 +152,10 @@
   <ItemGroup>
     <None Include="3.3.shader.frag" />
     <None Include="3.3.shader.vert" />
+    <None Include="lightCubeShader.frag" />
+    <None Include="lightCubeShader.vert" />
+    <None Include="lightingShader.frag" />
+    <None Include="lightingShader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -152,8 +152,8 @@
   <ItemGroup>
     <None Include="3.3.shader.frag" />
     <None Include="3.3.shader.vert" />
-    <None Include="lightCubeShader.frag" />
-    <None Include="lightCubeShader.vert" />
+    <None Include="lightingCubeShader.frag" />
+    <None Include="lightingCubeShader.vert" />
     <None Include="lightingShader.frag" />
     <None Include="lightingShader.vert" />
   </ItemGroup>

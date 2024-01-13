@@ -149,6 +149,7 @@
     <Image Include="awesomeface.png" />
     <Image Include="container.jpg" />
     <Image Include="containermaterial.png" />
+    <Image Include="container_specular.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="3.3.shader.frag" />

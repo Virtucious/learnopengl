@@ -150,10 +150,12 @@ int main()
 
 	//load textures
 	uint32_t diffuseMap = loadTexture("containermaterial.png");
+	uint32_t specularMap = loadTexture("container_specular.png");
 
 	//shader configuration
 	lightingShader.use();
 	lightingShader.setInt("material.diffuse", 0);
+	lightingShader.setInt("material.specular", 1);
 
 	//render loop
 	//----------------------------------------
@@ -185,8 +187,8 @@ int main()
 		lightingShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
 
 		//material properties
-		lightingShader.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
 		lightingShader.setFloat("material.shininess", 64.0f);
+		
 
 		//view/projection transformations
 		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), 800.0f / 600.0f, 0.1f, 100.0f);
@@ -202,6 +204,9 @@ int main()
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, diffuseMap);
 
+		//bind specular map
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, specularMap);
 
 		//render the cube
 		glBindVertexArray(cubeVAO);

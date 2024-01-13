@@ -148,6 +148,7 @@
   <ItemGroup>
     <Image Include="awesomeface.png" />
     <Image Include="container.jpg" />
+    <Image Include="containermaterial.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="3.3.shader.frag" />

@@ -32,6 +32,12 @@
     <ClInclude Include="camera.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="mesh.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="model.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="container.jpg">
@@ -54,5 +60,7 @@
     <None Include="lightingShader.frag" />
     <None Include="lightingCubeShader.vert" />
     <None Include="lightingCubeShader.frag" />
+    <None Include="modelLoading.vert" />
+    <None Include="modelLoading.frag" />
   </ItemGroup>
 </Project>

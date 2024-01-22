@@ -72,11 +72,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(SolutionDir)LibrariesThirdParty\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)LibrariesThirdParty\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)LibrariesThirdParty\lib;$(SolutionDir)LibrariesThirdParty\assimp\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(SolutionDir)LibrariesThirdParty\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)LibrariesThirdParty\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)LibrariesThirdParty\lib;$(SolutionDir)LibrariesThirdParty\assimp\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -146,6 +146,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h" />
+    <ClInclude Include="mesh.h" />
+    <ClInclude Include="model.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="stb_image.h" />
   </ItemGroup>
@@ -162,6 +164,8 @@
     <None Include="lightingCubeShader.vert" />
     <None Include="lightingShader.frag" />
     <None Include="lightingShader.vert" />
+    <None Include="modelLoading.frag" />
+    <None Include="modelLoading.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

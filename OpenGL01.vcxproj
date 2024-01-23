@@ -156,10 +156,14 @@
     <Image Include="container.jpg" />
     <Image Include="containermaterial.png" />
     <Image Include="container_specular.png" />
+    <Image Include="marble.jpg" />
+    <Image Include="metal.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="3.3.shader.frag" />
     <None Include="3.3.shader.vert" />
+    <None Include="depthTesting.frag" />
+    <None Include="depthTesting.vert" />
     <None Include="lightingCubeShader.frag" />
     <None Include="lightingCubeShader.vert" />
     <None Include="lightingShader.frag" />

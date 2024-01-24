@@ -70,5 +70,8 @@
     <None Include="modelLoading.frag" />
     <None Include="depthTesting.vert" />
     <None Include="depthTesting.frag" />
+    <None Include="stencilTesting.frag" />
+    <None Include="stencilTesting.vert" />
+    <None Include="stencilSingleColor.frag" />
   </ItemGroup>
 </Project>

@@ -170,6 +170,9 @@
     <None Include="lightingShader.vert" />
     <None Include="modelLoading.frag" />
     <None Include="modelLoading.vert" />
+    <None Include="stencilSingleColor.frag" />
+    <None Include="stencilTesting.frag" />
+    <None Include="stencilTesting.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

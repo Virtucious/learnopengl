@@ -65,14 +65,9 @@ int main()
 	}
 	//configure global openGL state
 	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LESS);
-	glEnable(GL_STENCIL_TEST);
-	glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
-	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-
+	
 	//build and compile shaders
-	Shader shader("stencilTesting.vert", "stencilTesting.frag");
-	Shader shaderSingleColor("stencilTesting.vert", "stencilSingleColor.frag");
+	Shader shader("blending.vert", "blending.frag");
 
 	float cubeVertices[] =
 	{
@@ -131,6 +126,18 @@ int main()
 		 5.0f, -0.5f, -5.0f,  2.0f, 2.0f
 	};
 
+	float transparentVertices[] = {
+		// positions         // texture Coords (swapped y coordinates because texture is flipped upside down)
+		0.0f,  0.5f,  0.0f,  0.0f,  0.0f,
+		0.0f, -0.5f,  0.0f,  0.0f,  1.0f,
+		1.0f, -0.5f,  0.0f,  1.0f,  1.0f,
+
+		0.0f,  0.5f,  0.0f,  0.0f,  0.0f,
+		1.0f, -0.5f,  0.0f,  1.0f,  1.0f,
+		1.0f,  0.5f,  0.0f,  1.0f,  0.0f
+	};
+
+
 	//cube VAO
 	uint32_t cubeVAO, cubeVBO;
 	glGenVertexArrays(1, &cubeVAO);
@@ -154,7 +161,7 @@ int main()
 	glGenBuffers(1, &planeVBO);
 
 	glBindVertexArray(planeVAO);
-	glBindBuffer(GL_ARRAY_BUFFER, planeVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, planeVBO);
 	
 	glBufferData(GL_ARRAY_BUFFER, sizeof(planeVertices), &planeVertices, GL_STATIC_DRAW);
 	glEnableVertexAttribArray(0);
@@ -164,9 +171,31 @@ int main()
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 	glBindVertexArray(0);
 
+	//transparent VAO
+	uint32_t transparentVAO, transparentVBO;
+	glGenVertexArrays(1, &transparentVAO);
+	glGenBuffers(1, &transparentVBO);
+
+	glBindVertexArray(transparentVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, transparentVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(transparentVertices), transparentVertices, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+	glBindVertexArray(0);
+
 	//load textures
 	uint32_t cubeTexture = loadTexture("marble.jpg");
 	uint32_t floorTexture = loadTexture("metal.png");
+	uint32_t grassTexture = loadTexture("resources/grass.png");
+	
+	std::vector<glm::vec3> vegetation;
+	vegetation.push_back(glm::vec3(-1.5f, 0.0f, -0.48f));
+	vegetation.push_back(glm::vec3(1.5f, 0.0f, 0.51f));
+	vegetation.push_back(glm::vec3(0.0f, 0.0f, 0.7f));
+	vegetation.push_back(glm::vec3(-0.3f, 0.0f, -2.3f));
+	vegetation.push_back(glm::vec3(0.5f, 0.0f, -0.6f));
 
 	//shader configuration
 	shader.use();
@@ -188,34 +217,24 @@ int main()
 
 		//render
 		//-----------
-		glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		//set uniforms
-		shaderSingleColor.use();
+		shader.use();
 		glm::mat4 model = glm::mat4(1.0f);
 		glm::mat4 view = camera.GetViewMatrix();
 		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), 800.0f / 600.0f, 0.1f, 100.0f);
-		shaderSingleColor.setMat4("view", view);
-		shaderSingleColor.setMat4("projection", projection);
-
-		shader.use();
 		shader.setMat4("view", view);
 		shader.setMat4("projection", projection);
 
-		//draw floor as normal, but don't write the floor to the stencil buffer, we only care about the containers. We set its mask to 0x00 to not write to stencil buffer
-		glStencilMask(0x00);
 		//floor
 		glBindVertexArray(planeVAO);
 		glBindTexture(GL_TEXTURE_2D, floorTexture);
+		model = glm::mat4(1.0f);
 		shader.setMat4("model", model);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
-		glBindVertexArray(0);
 
-		//1st. render pass, draw objects as normal, writing to stencil buffer
-		//-------------------------------------------------------------------
-		glStencilFunc(GL_ALWAYS, 1, 0xFF);
-		glStencilMask(0xFF);
 		//cubes
 		glBindVertexArray(cubeVAO);
 		glActiveTexture(GL_TEXTURE0);
@@ -228,27 +247,17 @@ int main()
 		shader.setMat4("model", model);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
-		//2nd. render pass: now draw slightly scaled versions of the objects, this time disabling stencil writing.
-		//Because the stencil buffer is now filled with several 1s. The parts of the buffer that are 1 are not drawn, thus only drawing
-		//the objects' size differences, making it look like borders
-		//-----------------------------------------------------------------------------------
-		glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
-		glStencilMask(0x00);
-		glDisable(GL_DEPTH_TEST);
-		shaderSingleColor.use();
-		float scale = 1.1f;
-		//cubes
-		glBindVertexArray(cubeVAO);
-		glBindTexture(GL_TEXTURE_2D, cubeTexture);
-		model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(-1.0f, 0.0f, -1.0f));
-		model = glm::scale(model, glm::vec3(scale, scale, scale));
-		shaderSingleColor.setMat4("model", model);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-		glBindVertexArray(0);
-		glStencilMask(0xFF);
-		glStencilFunc(GL_ALWAYS, 0, 0xFF);
-		glEnable(GL_DEPTH_TEST);
+		//vegetation
+		glBindVertexArray(transparentVAO);
+		glBindTexture(GL_TEXTURE_2D, grassTexture);
+		for (uint32_t i = 0; i < vegetation.size(); i++)
+		{
+			model = glm::mat4(1.0f);
+			model = glm::translate(model, vegetation[i]);
+			shader.setMat4("model", model);
+			glDrawArrays(GL_TRIANGLES, 0, 6);
+		}
+		
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
@@ -332,8 +341,8 @@ uint32_t loadTexture(char const* path)
 		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, format == GL_RGBA ? GL_CLAMP_TO_EDGE : GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, format == GL_RGBA ? GL_CLAMP_TO_EDGE : GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 

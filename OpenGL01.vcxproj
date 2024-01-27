@@ -159,6 +159,7 @@
     <Image Include="marble.jpg" />
     <Image Include="metal.png" />
     <Image Include="resources\grass.png" />
+    <Image Include="resources\transparentWindow.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="3.3.shader.frag" />

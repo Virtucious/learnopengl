@@ -1,17 +1,17 @@
 #include <glad.h>
 #include <glfw3.h>
-#include "stb_image.h"
 
 #include "LibrariesThirdParty/glm/glm.hpp"
 #include "LibrariesThirdParty/glm/gtc/matrix_transform.hpp"
 #include "LibrariesThirdParty/glm/gtc/type_ptr.hpp"
-#define STB_IMAGE_IMPLEMENTATION
 
 #include "shader.h"
 #include "camera.h"
 #include "model.h"
 
 #include <iostream>
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);

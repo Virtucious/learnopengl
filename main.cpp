@@ -74,8 +74,7 @@ int main()
     // configure global opengl state
     // -----------------------------
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_CULL_FACE);
 
     // build and compile shaders
     // -------------------------
@@ -84,48 +83,48 @@ int main()
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
     float cubeVertices[] = {
-        // positions          // texture Coords
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-         0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-
-        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+            // back face
+            -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, // bottom-left
+             0.5f,  0.5f, -0.5f, 1.0f, 1.0f, // top-right
+             0.5f, -0.5f, -0.5f, 1.0f, 0.0f, // bottom-right
+             0.5f,  0.5f, -0.5f, 1.0f, 1.0f, // top-right
+            -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, // bottom-left
+            -0.5f,  0.5f, -0.5f, 0.0f, 1.0f, // top-left
+            // front face
+            -0.5f, -0.5f,  0.5f, 0.0f, 0.0f, // bottom-left
+             0.5f, -0.5f,  0.5f, 1.0f, 0.0f, // bottom-right
+             0.5f,  0.5f,  0.5f, 1.0f, 1.0f, // top-right
+             0.5f,  0.5f,  0.5f, 1.0f, 1.0f, // top-right
+            -0.5f,  0.5f,  0.5f, 0.0f, 1.0f, // top-left
+            -0.5f, -0.5f,  0.5f, 0.0f, 0.0f, // bottom-left
+            // left face
+            -0.5f,  0.5f,  0.5f, 1.0f, 0.0f, // top-right
+            -0.5f,  0.5f, -0.5f, 1.0f, 1.0f, // top-left
+            -0.5f, -0.5f, -0.5f, 0.0f, 1.0f, // bottom-left
+            -0.5f, -0.5f, -0.5f, 0.0f, 1.0f, // bottom-left
+            -0.5f, -0.5f,  0.5f, 0.0f, 0.0f, // bottom-right
+            -0.5f,  0.5f,  0.5f, 1.0f, 0.0f, // top-right
+            // right face
+             0.5f,  0.5f,  0.5f, 1.0f, 0.0f, // top-left
+             0.5f, -0.5f, -0.5f, 0.0f, 1.0f, // bottom-right
+             0.5f,  0.5f, -0.5f, 1.0f, 1.0f, // top-right
+             0.5f, -0.5f, -0.5f, 0.0f, 1.0f, // bottom-right
+             0.5f,  0.5f,  0.5f, 1.0f, 0.0f, // top-left
+             0.5f, -0.5f,  0.5f, 0.0f, 0.0f, // bottom-left
+            // bottom face
+            -0.5f, -0.5f, -0.5f, 0.0f, 1.0f, // top-right
+             0.5f, -0.5f, -0.5f, 1.0f, 1.0f, // top-left
+             0.5f, -0.5f,  0.5f, 1.0f, 0.0f, // bottom-left
+             0.5f, -0.5f,  0.5f, 1.0f, 0.0f, // bottom-left
+            -0.5f, -0.5f,  0.5f, 0.0f, 0.0f, // bottom-right
+            -0.5f, -0.5f, -0.5f, 0.0f, 1.0f, // top-right
+            // top face
+            -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, // top-left
+             0.5f, 0.5f,  0.5f, 1.0f, 0.0f, // bottom-right
+             0.5f, 0.5f, -0.5f, 1.0f, 1.0f, // top-right
+             0.5f, 0.5f,  0.5f, 1.0f, 0.0f, // bottom-right
+            -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, // top-left
+            -0.5f, 0.5f,  0.5f, 0.0f, 0.0f // bottom-left
     };
     float planeVertices[] = {
         // positions          // texture Coords 
@@ -137,16 +136,7 @@ int main()
         -5.0f, -0.5f, -5.0f,  0.0f, 2.0f,
          5.0f, -0.5f, -5.0f,  2.0f, 2.0f
     };
-    float transparentVertices[] = {
-        // positions         // texture Coords (swapped y coordinates because texture is flipped upside down)
-        0.0f,  0.5f,  0.0f,  0.0f,  0.0f,
-        0.0f, -0.5f,  0.0f,  0.0f,  1.0f,
-        1.0f, -0.5f,  0.0f,  1.0f,  1.0f,
-
-        0.0f,  0.5f,  0.0f,  0.0f,  0.0f,
-        1.0f, -0.5f,  0.0f,  1.0f,  1.0f,
-        1.0f,  0.5f,  0.0f,  1.0f,  0.0f
-    };
+    
     // cube VAO
     unsigned int cubeVAO, cubeVBO;
     glGenVertexArrays(1, &cubeVAO);
@@ -169,35 +159,11 @@ int main()
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-    // transparent VAO
-    unsigned int transparentVAO, transparentVBO;
-    glGenVertexArrays(1, &transparentVAO);
-    glGenBuffers(1, &transparentVBO);
-    glBindVertexArray(transparentVAO);
-    glBindBuffer(GL_ARRAY_BUFFER, transparentVBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(transparentVertices), transparentVertices, GL_STATIC_DRAW);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-    glBindVertexArray(0);
-
+    
     // load textures
     // -------------
     unsigned int cubeTexture = loadTexture("marble.jpg");
     unsigned int floorTexture = loadTexture("metal.png");
-    unsigned int transparentTexture = loadTexture("resources/transparentWindow.png");
-
-    // transparent window locations
-    // --------------------------------
-    vector<glm::vec3> windows
-    {
-        glm::vec3(-1.5f, 0.0f, -0.48f),
-        glm::vec3(1.5f, 0.0f, 0.51f),
-        glm::vec3(0.0f, 0.0f, 0.7f),
-        glm::vec3(-0.3f, 0.0f, -2.3f),
-        glm::vec3(0.5f, 0.0f, -0.6f)
-    };
 
     // shader configuration
     // --------------------
@@ -217,15 +183,6 @@ int main()
         // input
         // -----
         processInput(window);
-
-        // sort the transparent windows before rendering
-        // ---------------------------------------------
-        std::map<float, glm::vec3> sorted;
-        for (unsigned int i = 0; i < windows.size(); i++)
-        {
-            float distance = glm::length(camera.Position - windows[i]);
-            sorted[distance] = windows[i];
-        }
 
         // render
         // ------
@@ -256,17 +213,6 @@ int main()
         model = glm::mat4(1.0f);
         shader.setMat4("model", model);
         glDrawArrays(GL_TRIANGLES, 0, 6);
-        // windows (from furthest to nearest)
-        glBindVertexArray(transparentVAO);
-        glBindTexture(GL_TEXTURE_2D, transparentTexture);
-        for (std::map<float, glm::vec3>::reverse_iterator it = sorted.rbegin(); it != sorted.rend(); ++it)
-        {
-            model = glm::mat4(1.0f);
-            model = glm::translate(model, it->second);
-            shader.setMat4("model", model);
-            glDrawArrays(GL_TRIANGLES, 0, 6);
-        }
-
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------

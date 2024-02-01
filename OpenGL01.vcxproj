@@ -166,6 +166,10 @@
     <None Include="3.3.shader.vert" />
     <None Include="blending.frag" />
     <None Include="blending.vert" />
+    <None Include="frameBuffer.frag" />
+    <None Include="frameBuffer.vert" />
+    <None Include="frameBufferScreen.frag" />
+    <None Include="frameBufferScreen.vert" />
     <None Include="lightingCubeShader.frag" />
     <None Include="lightingCubeShader.vert" />
     <None Include="lightingShader.frag" />

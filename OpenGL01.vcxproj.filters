@@ -61,6 +61,9 @@
     <Image Include="resources\grass.png">
       <Filter>Source Files</Filter>
     </Image>
+    <Image Include="resources\transparentWindow.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="3.3.shader.vert" />
@@ -76,5 +79,9 @@
     <None Include="stencilTesting.frag" />
     <None Include="stencilTesting.vert" />
     <None Include="stencilSingleColor.frag" />
+    <None Include="frameBuffer.vert" />
+    <None Include="frameBuffer.frag" />
+    <None Include="frameBufferScreen.vert" />
+    <None Include="frameBufferScreen.frag" />
   </ItemGroup>
 </Project>

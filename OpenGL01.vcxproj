@@ -176,6 +176,8 @@
     <None Include="lightingShader.vert" />
     <None Include="modelLoading.frag" />
     <None Include="modelLoading.vert" />
+    <None Include="skybox.frag" />
+    <None Include="skybox.vert" />
     <None Include="stencilSingleColor.frag" />
     <None Include="stencilTesting.frag" />
     <None Include="stencilTesting.vert" />

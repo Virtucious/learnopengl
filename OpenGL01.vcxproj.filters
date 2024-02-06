@@ -83,5 +83,7 @@
     <None Include="frameBuffer.frag" />
     <None Include="frameBufferScreen.vert" />
     <None Include="frameBufferScreen.frag" />
+    <None Include="skybox.vert" />
+    <None Include="skybox.frag" />
   </ItemGroup>
 </Project>

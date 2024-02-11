@@ -85,5 +85,10 @@
     <None Include="frameBufferScreen.frag" />
     <None Include="skybox.vert" />
     <None Include="skybox.frag" />
+    <None Include="advanced_glsl.vert" />
+    <None Include="red.frag" />
+    <None Include="blue.frag" />
+    <None Include="green.frag" />
+    <None Include="yellow.frag" />
   </ItemGroup>
 </Project>

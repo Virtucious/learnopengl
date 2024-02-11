@@ -164,23 +164,28 @@
   <ItemGroup>
     <None Include="3.3.shader.frag" />
     <None Include="3.3.shader.vert" />
+    <None Include="advanced_glsl.vert" />
     <None Include="blending.frag" />
     <None Include="blending.vert" />
+    <None Include="blue.frag" />
     <None Include="frameBuffer.frag" />
     <None Include="frameBuffer.vert" />
     <None Include="frameBufferScreen.frag" />
     <None Include="frameBufferScreen.vert" />
+    <None Include="green.frag" />
     <None Include="lightingCubeShader.frag" />
     <None Include="lightingCubeShader.vert" />
     <None Include="lightingShader.frag" />
     <None Include="lightingShader.vert" />
     <None Include="modelLoading.frag" />
     <None Include="modelLoading.vert" />
+    <None Include="red.frag" />
     <None Include="skybox.frag" />
     <None Include="skybox.vert" />
     <None Include="stencilSingleColor.frag" />
     <None Include="stencilTesting.frag" />
     <None Include="stencilTesting.vert" />
+    <None Include="yellow.frag" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

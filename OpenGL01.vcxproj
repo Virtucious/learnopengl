@@ -172,6 +172,9 @@
     <None Include="frameBuffer.vert" />
     <None Include="frameBufferScreen.frag" />
     <None Include="frameBufferScreen.vert" />
+    <None Include="geometryShader.frag" />
+    <None Include="geometryShader.geom" />
+    <None Include="geometryShader.vert" />
     <None Include="green.frag" />
     <None Include="lightingCubeShader.frag" />
     <None Include="lightingCubeShader.vert" />

@@ -90,5 +90,8 @@
     <None Include="blue.frag" />
     <None Include="green.frag" />
     <None Include="yellow.frag" />
+    <None Include="geometryShader.vert" />
+    <None Include="geometryShader.frag" />
+    <None Include="geometryShader.geom" />
   </ItemGroup>
 </Project>

@@ -77,93 +77,29 @@ int main()
 
     // build and compile shaders
     // -------------------------
-    Shader redShader("advanced_glsl.vert", "red.frag");
-    Shader greenShader("advanced_glsl.vert", "green.frag");
-    Shader blueShader("advanced_glsl.vert", "blue.frag");
-    Shader yellowShader("advanced_glsl.vert", "yellow.frag");
+    Shader shader("geometryShader.vert", "geometryShader.frag", "geometryShader.geom");
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
-    float cubeVertices[] = {
-        // positions         
-        -0.5f, -0.5f, -0.5f,
-         0.5f, -0.5f, -0.5f,
-         0.5f,  0.5f, -0.5f,
-         0.5f,  0.5f, -0.5f,
-        -0.5f,  0.5f, -0.5f,
-        -0.5f, -0.5f, -0.5f,
-
-        -0.5f, -0.5f,  0.5f,
-         0.5f, -0.5f,  0.5f,
-         0.5f,  0.5f,  0.5f,
-         0.5f,  0.5f,  0.5f,
-        -0.5f,  0.5f,  0.5f,
-        -0.5f, -0.5f,  0.5f,
-
-        -0.5f,  0.5f,  0.5f,
-        -0.5f,  0.5f, -0.5f,
-        -0.5f, -0.5f, -0.5f,
-        -0.5f, -0.5f, -0.5f,
-        -0.5f, -0.5f,  0.5f,
-        -0.5f,  0.5f,  0.5f,
-
-         0.5f,  0.5f,  0.5f,
-         0.5f,  0.5f, -0.5f,
-         0.5f, -0.5f, -0.5f,
-         0.5f, -0.5f, -0.5f,
-         0.5f, -0.5f,  0.5f,
-         0.5f,  0.5f,  0.5f,
-
-        -0.5f, -0.5f, -0.5f,
-         0.5f, -0.5f, -0.5f,
-         0.5f, -0.5f,  0.5f,
-         0.5f, -0.5f,  0.5f,
-        -0.5f, -0.5f,  0.5f,
-        -0.5f, -0.5f, -0.5f,
-
-        -0.5f,  0.5f, -0.5f,
-         0.5f,  0.5f, -0.5f,
-         0.5f,  0.5f,  0.5f,
-         0.5f,  0.5f,  0.5f,
-        -0.5f,  0.5f,  0.5f,
-        -0.5f,  0.5f, -0.5f,
+    float points[] = {
+        -0.5f,  0.5f, 1.0f, 0.0f, 0.0f, // top-left
+         0.5f,  0.5f, 0.0f, 1.0f, 0.0f, // top-right
+         0.5f, -0.5f, 0.0f, 0.0f, 1.0f, // bottom-right
+        -0.5f, -0.5f, 1.0f, 1.0f, 0.0f  // bottom-left
     };
     
-    // cube VAO
-    uint32_t cubeVAO, cubeVBO;
-    glGenVertexArrays(1, &cubeVAO);
-    glGenBuffers(1, &cubeVBO);
-    glBindVertexArray(cubeVAO);
-    glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), &cubeVertices, GL_STATIC_DRAW);
+    
+    uint32_t VAO, VBO;
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    glBindVertexArray(VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(points), &points, GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-
-    //configure a uniform buffer object
-    //---------------------------------
-    //first. we get the relevant block indices
-    uint32_t uniformBlockIndexRed    = glGetUniformBlockIndex(redShader.ID, "Matrices");
-    uint32_t uniformBlockIndexGreen  = glGetUniformBlockIndex(greenShader.ID, "Matrices");
-    uint32_t uniformBlockIndexBlue   = glGetUniformBlockIndex(blueShader.ID, "Matrices");
-    uint32_t uniformBlockIndexYellow = glGetUniformBlockIndex(yellowShader.ID, "Matrices");
-    //then we link each shader's uniform block to this uniform binding point
-    glUniformBlockBinding(redShader.ID, uniformBlockIndexRed, 0);
-    glUniformBlockBinding(greenShader.ID, uniformBlockIndexGreen, 0);
-    glUniformBlockBinding(blueShader.ID, uniformBlockIndexBlue, 0);
-    glUniformBlockBinding(yellowShader.ID, uniformBlockIndexYellow, 0);
-    //now we create the buffer
-    uint32_t uboMatrices;
-    glGenBuffers(1, &uboMatrices);
-    glBindBuffer(GL_UNIFORM_BUFFER, uboMatrices);
-    glBufferData(GL_UNIFORM_BUFFER, 2 * sizeof(glm::mat4), NULL, GL_STATIC_DRAW);
-    glBindBuffer(GL_UNIFORM_BUFFER, 0);
-    //define the range of the buffer that links to a uniform binding point
-    glBindBufferRange(GL_UNIFORM_BUFFER, 0, uboMatrices, 0, 2 * sizeof(glm::mat4));
-    //store the projection matrix (we only do this once now) (note: we are not using zoom anymore by changing the FOV)
-    glm::mat4 projection = glm::perspective(45.0f, (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-    glBindBuffer(GL_UNIFORM_BUFFER, uboMatrices);
-    glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::mat4), glm::value_ptr(projection));
-    glBindBuffer(GL_UNIFORM_BUFFER, 0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), 0);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(2 * sizeof(float)));
+    glBindVertexArray(0);
 
     // render loop
     // -----------
@@ -184,41 +120,9 @@ int main()
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        //set the view and projection matrix in the uniform block - we only have to do this once per loop iteration
-        glm::mat4 view = camera.GetViewMatrix();
-        glBindBuffer(GL_UNIFORM_BUFFER, uboMatrices);
-        glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(view));
-        glBindBuffer(GL_UNIFORM_BUFFER, 0);
-
-        //draw 4 cubes
-        //RED
-        glBindVertexArray(cubeVAO);
-        redShader.use();
-        glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(-0.75f, 0.75f, 0.0f));
-        redShader.setMat4("model", model);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-        //GREEN
-        glBindVertexArray(cubeVAO);
-        greenShader.use();
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(0.75f, 0.75f, 0.0f));
-        greenShader.setMat4("model", model);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-        //BLUE
-        glBindVertexArray(cubeVAO);
-        blueShader.use();
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(-0.75f, -0.75f, 0.0f));
-        greenShader.setMat4("model", model);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-        //YELLOW
-        glBindVertexArray(cubeVAO);
-        yellowShader.use();
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(0.75f, -0.75f, 0.0f));
-        yellowShader.setMat4("model", model);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        shader.use();
+        glBindVertexArray(VAO);
+        glDrawArrays(GL_POINTS, 0, 4);
         
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
@@ -229,8 +133,8 @@ int main()
 
     // optional: de-allocate all resources once they've outlived their purpose:
     // ------------------------------------------------------------------------
-    glDeleteVertexArrays(1, &cubeVAO);
-    glDeleteBuffers(1, &cubeVBO);
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
 
     glfwTerminate();
     return 0;

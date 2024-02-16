@@ -2,6 +2,8 @@
 #define SHADER_H
 
 #include <glad.h>
+#include "LibrariesThirdParty/glm/glm.hpp"
+
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -41,7 +43,7 @@ public:
             // convert stream into string
             vertexCode = vShaderStream.str();
             fragmentCode = fShaderStream.str();
-            //if geometry path is present, also load a geometry shader
+            // if geometry shader path is present, also load a geometry shader
             if (geometryPath != nullptr)
             {
                 gShaderFile.open(geometryPath);
@@ -69,7 +71,7 @@ public:
         glShaderSource(fragment, 1, &fShaderCode, NULL);
         glCompileShader(fragment);
         checkCompileErrors(fragment, "FRAGMENT");
-        //if geometry shader is given, compile geometry shader
+        // if geometry shader is given, compile geometry shader
         unsigned int geometry;
         if (geometryPath != nullptr)
         {
@@ -84,23 +86,19 @@ public:
         glAttachShader(ID, vertex);
         glAttachShader(ID, fragment);
         if (geometryPath != nullptr)
-        {
             glAttachShader(ID, geometry);
-        }
         glLinkProgram(ID);
         checkCompileErrors(ID, "PROGRAM");
         // delete the shaders as they're linked into our program now and no longer necessary
         glDeleteShader(vertex);
         glDeleteShader(fragment);
         if (geometryPath != nullptr)
-        {
             glDeleteShader(geometry);
-        }
 
     }
     // activate the shader
     // ------------------------------------------------------------------------
-    void use() const
+    void use()
     {
         glUseProgram(ID);
     }
@@ -143,7 +141,7 @@ public:
     {
         glUniform4fv(glGetUniformLocation(ID, name.c_str()), 1, &value[0]);
     }
-    void setVec4(const std::string& name, float x, float y, float z, float w) const
+    void setVec4(const std::string& name, float x, float y, float z, float w)
     {
         glUniform4f(glGetUniformLocation(ID, name.c_str()), x, y, z, w);
     }
@@ -191,3 +189,4 @@ private:
     }
 };
 #endif
+

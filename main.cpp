@@ -73,8 +73,9 @@ int main()
 
     // build and compile shaders
     // -------------------------
-    Shader shader("geometryShader.vert", "geometryShader.frag", "geometryShader.geom");
+    Shader shader("default.vert", "default.frag");
     Shader skyboxShader("skybox.vert", "skybox.frag");
+    Shader normalShader("normal.vert", "normal.frag", "normal.geom");
 
     float skyboxVertices[] = {
         // positions          
@@ -178,11 +179,15 @@ int main()
         shader.setMat4("view", view);
         shader.setMat4("model", model);
 
-        //add time component to geometry shader in the form of uniform
-        shader.setFloat("time", static_cast<float>(glfwGetTime()));
-
         //draw model
         nanosuit.Draw(shader);
+
+        //draw with normal visualizing geometry shader
+        normalShader.use();
+        normalShader.setMat4("projection", projection);
+        normalShader.setMat4("view", view);
+        normalShader.setMat4("model", model);
+        nanosuit.Draw(normalShader);
 
         //draw skybox at last
         glDepthFunc(GL_LEQUAL);

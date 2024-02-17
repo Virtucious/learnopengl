@@ -93,5 +93,10 @@
     <None Include="geometryShader.vert" />
     <None Include="geometryShader.frag" />
     <None Include="geometryShader.geom" />
+    <None Include="default.vert" />
+    <None Include="default.frag" />
+    <None Include="normal.vert" />
+    <None Include="normal.frag" />
+    <None Include="normal.geom" />
   </ItemGroup>
 </Project>

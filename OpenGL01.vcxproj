@@ -168,6 +168,8 @@
     <None Include="blending.frag" />
     <None Include="blending.vert" />
     <None Include="blue.frag" />
+    <None Include="default.frag" />
+    <None Include="default.vert" />
     <None Include="frameBuffer.frag" />
     <None Include="frameBuffer.vert" />
     <None Include="frameBufferScreen.frag" />
@@ -182,6 +184,9 @@
     <None Include="lightingShader.vert" />
     <None Include="modelLoading.frag" />
     <None Include="modelLoading.vert" />
+    <None Include="normal.frag" />
+    <None Include="normal.geom" />
+    <None Include="normal.vert" />
     <None Include="red.frag" />
     <None Include="skybox.frag" />
     <None Include="skybox.vert" />

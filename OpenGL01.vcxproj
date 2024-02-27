@@ -178,6 +178,8 @@
     <None Include="geometryShader.geom" />
     <None Include="geometryShader.vert" />
     <None Include="green.frag" />
+    <None Include="instancing.frag" />
+    <None Include="instancing.vert" />
     <None Include="lightingCubeShader.frag" />
     <None Include="lightingCubeShader.vert" />
     <None Include="lightingShader.frag" />

@@ -98,5 +98,7 @@
     <None Include="normal.vert" />
     <None Include="normal.frag" />
     <None Include="normal.geom" />
+    <None Include="instancing.vert" />
+    <None Include="instancing.frag" />
   </ItemGroup>
 </Project>

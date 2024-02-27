@@ -73,83 +73,62 @@ int main()
 
     // build and compile shaders
     // -------------------------
-    Shader shader("default.vert", "default.frag");
-    Shader skyboxShader("skybox.vert", "skybox.frag");
-    Shader normalShader("normal.vert", "normal.frag", "normal.geom");
+    Shader shader("instancing.vert", "instancing.frag");
 
-    float skyboxVertices[] = {
-        // positions          
-        -1.0f,  1.0f, -1.0f,
-        -1.0f, -1.0f, -1.0f,
-         1.0f, -1.0f, -1.0f,
-         1.0f, -1.0f, -1.0f,
-         1.0f,  1.0f, -1.0f,
-        -1.0f,  1.0f, -1.0f,
-
-        -1.0f, -1.0f,  1.0f,
-        -1.0f, -1.0f, -1.0f,
-        -1.0f,  1.0f, -1.0f,
-        -1.0f,  1.0f, -1.0f,
-        -1.0f,  1.0f,  1.0f,
-        -1.0f, -1.0f,  1.0f,
-
-         1.0f, -1.0f, -1.0f,
-         1.0f, -1.0f,  1.0f,
-         1.0f,  1.0f,  1.0f,
-         1.0f,  1.0f,  1.0f,
-         1.0f,  1.0f, -1.0f,
-         1.0f, -1.0f, -1.0f,
-
-        -1.0f, -1.0f,  1.0f,
-        -1.0f,  1.0f,  1.0f,
-         1.0f,  1.0f,  1.0f,
-         1.0f,  1.0f,  1.0f,
-         1.0f, -1.0f,  1.0f,
-        -1.0f, -1.0f,  1.0f,
-
-        -1.0f,  1.0f, -1.0f,
-         1.0f,  1.0f, -1.0f,
-         1.0f,  1.0f,  1.0f,
-         1.0f,  1.0f,  1.0f,
-        -1.0f,  1.0f,  1.0f,
-        -1.0f,  1.0f, -1.0f,
-
-        -1.0f, -1.0f, -1.0f,
-        -1.0f, -1.0f,  1.0f,
-         1.0f, -1.0f, -1.0f,
-         1.0f, -1.0f, -1.0f,
-        -1.0f, -1.0f,  1.0f,
-         1.0f, -1.0f,  1.0f
-    };
-
-    //skybox VAO
-    uint32_t skyboxVAO, skyboxVBO;
-    glGenVertexArrays(1, &skyboxVAO);
-    glGenBuffers(1, &skyboxVBO);
-    glBindVertexArray(skyboxVAO);
-    glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-
-    std::vector<string> faces
+    //generate a list of 100 quad locations/translation-vectors
+    //---------------------------------------------------------
+    glm::vec2 translations[100];
+    int index = 0;
+    float offset = 0.1f;
+    for (int y = -10; y < 10; y += 2)
     {
-        "resources/skybox/right.jpg",
-        "resources/skybox/left.jpg",
-        "resources/skybox/top.jpg",
-        "resources/skybox/bottom.jpg",
-        "resources/skybox/front.jpg",
-        "resources/skybox/back.jpg",
+        for (int x = -10; x < 10; x += 2)
+        {
+            glm::vec2 translation;
+            translation.x = (float)x / 10.0f + offset;
+            translation.y = (float)y / 10.0f + offset;
+            translations[index++] = translation;
+        }
+    }
+
+    //store instance data in an array buffer
+    //-------------------------------------
+    uint32_t instanceVBO;
+    glGenBuffers(1, &instanceVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, instanceVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec2) * 100, &translations[0], GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    //set up vertex data (and buffer(s)) and configure vertex attributes
+    //-----------------------------------------------------------------
+    float quadVertices[] =
+    {
+        //positions      //colors
+        -0.05f,  0.05f,  1.0f, 0.0f, 0.0f,
+         0.05f, -0.05f,  0.0f, 1.0f, 0.0f,
+        -0.05f, -0.05f,  0.0f, 0.0f, 1.0f,
+
+        -0.05f,  0.05f,  1.0f, 0.0f, 0.0f,
+         0.05f, -0.05f,  0.0f, 1.0f, 0.0f,
+         0.05f,  0.05f,  0.0f, 1.0f, 1.0f
     };
-   
-    uint32_t cubemapTexture = loadCubemap(faces);
-
-    skyboxShader.use();
-    skyboxShader.setInt("skybox", 0);
-
-    //load models
-    //--------------------------
-    Model nanosuit("resources/Nanosuit/Nanosuit.obj");
+    
+    uint32_t quadVAO, quadVBO;
+    glGenVertexArrays(1, &quadVAO);
+    glGenBuffers(1, &quadVBO);
+    glBindVertexArray(quadVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), quadVertices, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(2 * sizeof(float)));
+    //also set instance data
+    glEnableVertexAttribArray(2);
+    glBindBuffer(GL_ARRAY_BUFFER, instanceVBO); // this attribute comes from a different vertex buffer
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glVertexAttribDivisor(2, 1);    //tell OpenGL this is an instanced vertex attribute
 
     // render loop
     // -----------
@@ -170,47 +149,17 @@ int main()
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        //configure transformation matrices
-        glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 1.0f, 100.0f);
-        glm::mat4 view = camera.GetViewMatrix();
-        glm::mat4 model = glm::mat4(1.0f);
+        //draw 100 instanced quads
         shader.use();
-        shader.setMat4("projection", projection);
-        shader.setMat4("view", view);
-        shader.setMat4("model", model);
-
-        //draw model
-        nanosuit.Draw(shader);
-
-        //draw with normal visualizing geometry shader
-        normalShader.use();
-        normalShader.setMat4("projection", projection);
-        normalShader.setMat4("view", view);
-        normalShader.setMat4("model", model);
-        nanosuit.Draw(normalShader);
-
-        //draw skybox at last
-        glDepthFunc(GL_LEQUAL);
-        skyboxShader.use();
-        view = glm::mat4(glm::mat3(camera.GetViewMatrix()));
-        skyboxShader.setMat4("view", view);
-        skyboxShader.setMat4("projection", projection);
-        //skybox cube
-        glBindVertexArray(skyboxVAO);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        glBindVertexArray(quadVAO);
+        glDrawArraysInstanced(GL_TRIANGLES, 0, 6, 100);
         glBindVertexArray(0);
-        glDepthFunc(GL_LESS);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-    glDeleteVertexArrays(1, &skyboxVAO);
-    glDeleteBuffers(1, &skyboxVBO);
-
     glfwTerminate();
     return 0;
 }

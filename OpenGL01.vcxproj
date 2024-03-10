@@ -164,7 +164,13 @@
   <ItemGroup>
     <None Include="3.3.shader.frag" />
     <None Include="3.3.shader.vert" />
+    <None Include="aa_post_aliasing.frag" />
+    <None Include="aa_post_aliasing.vert" />
     <None Include="advanced_glsl.vert" />
+    <None Include="anti_aliasing.frag" />
+    <None Include="anti_aliasing.vert" />
+    <None Include="asteroid.frag" />
+    <None Include="asteroid.vert" />
     <None Include="blending.frag" />
     <None Include="blending.vert" />
     <None Include="blue.frag" />
@@ -189,6 +195,8 @@
     <None Include="normal.frag" />
     <None Include="normal.geom" />
     <None Include="normal.vert" />
+    <None Include="planet.frag" />
+    <None Include="planet.vert" />
     <None Include="red.frag" />
     <None Include="skybox.frag" />
     <None Include="skybox.vert" />

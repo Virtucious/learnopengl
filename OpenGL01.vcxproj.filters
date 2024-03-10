@@ -100,5 +100,13 @@
     <None Include="normal.geom" />
     <None Include="instancing.vert" />
     <None Include="instancing.frag" />
+    <None Include="asteroid.vert" />
+    <None Include="asteroid.frag" />
+    <None Include="planet.vert" />
+    <None Include="planet.frag" />
+    <None Include="anti_aliasing.vert" />
+    <None Include="anti_aliasing.frag" />
+    <None Include="aa_post_aliasing.vert" />
+    <None Include="aa_post_aliasing.frag" />
   </ItemGroup>
 </Project>

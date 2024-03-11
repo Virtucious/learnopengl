@@ -167,6 +167,8 @@
     <None Include="aa_post_aliasing.frag" />
     <None Include="aa_post_aliasing.vert" />
     <None Include="advanced_glsl.vert" />
+    <None Include="advanced_lighting.frag" />
+    <None Include="advanced_lighting.vert" />
     <None Include="anti_aliasing.frag" />
     <None Include="anti_aliasing.vert" />
     <None Include="asteroid.frag" />

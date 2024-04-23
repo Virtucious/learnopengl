@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -176,6 +176,8 @@
     <None Include="blending.frag" />
     <None Include="blending.vert" />
     <None Include="blue.frag" />
+    <None Include="debug_quad.vert" />
+    <None Include="debug_quad_depth.frag" />
     <None Include="default.frag" />
     <None Include="default.vert" />
     <None Include="frameBuffer.frag" />
@@ -200,6 +202,8 @@
     <None Include="planet.frag" />
     <None Include="planet.vert" />
     <None Include="red.frag" />
+    <None Include="shadow_mapping_depth.frag" />
+    <None Include="shadow_mapping_depth.vert" />
     <None Include="skybox.frag" />
     <None Include="skybox.vert" />
     <None Include="stencilSingleColor.frag" />

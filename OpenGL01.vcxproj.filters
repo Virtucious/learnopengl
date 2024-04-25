@@ -110,5 +110,11 @@
     <None Include="aa_post_aliasing.frag" />
     <None Include="advanced_lighting.vert" />
     <None Include="advanced_lighting.frag" />
+    <None Include="debug_quad.vert" />
+    <None Include="debug_quad_depth.frag" />
+    <None Include="shadow_mapping_depth.frag" />
+    <None Include="shadow_mapping_depth.vert" />
+    <None Include="shadowMapping.vert" />
+    <None Include="shadowMapping.frag" />
   </ItemGroup>
 </Project>

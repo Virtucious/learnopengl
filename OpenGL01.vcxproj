@@ -202,6 +202,8 @@
     <None Include="planet.frag" />
     <None Include="planet.vert" />
     <None Include="red.frag" />
+    <None Include="shadowMapping.frag" />
+    <None Include="shadowMapping.vert" />
     <None Include="shadow_mapping_depth.frag" />
     <None Include="shadow_mapping_depth.vert" />
     <None Include="skybox.frag" />

@@ -116,5 +116,10 @@
     <None Include="shadow_mapping_depth.vert" />
     <None Include="shadowMapping.vert" />
     <None Include="shadowMapping.frag" />
+    <None Include="point_shadows.vert" />
+    <None Include="point_shadows.frag" />
+    <None Include="point_shadows_depth.vert" />
+    <None Include="point_shadows_depth.geom" />
+    <None Include="point_shadows_depth.frag" />
   </ItemGroup>
 </Project>

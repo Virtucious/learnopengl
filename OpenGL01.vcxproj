@@ -201,6 +201,11 @@
     <None Include="normal.vert" />
     <None Include="planet.frag" />
     <None Include="planet.vert" />
+    <None Include="point_shadows.frag" />
+    <None Include="point_shadows.vert" />
+    <None Include="point_shadows_depth.frag" />
+    <None Include="point_shadows_depth.geom" />
+    <None Include="point_shadows_depth.vert" />
     <None Include="red.frag" />
     <None Include="shadowMapping.frag" />
     <None Include="shadowMapping.vert" />

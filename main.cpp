@@ -23,8 +23,7 @@ void renderQuad();
 // settings
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
-bool shadows = true;
-bool shadowsKeyPressed = false;
+float heightScale = 0.1f;
 
 // camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
@@ -83,18 +82,20 @@ int main()
 
     // build and compile shaders
     // -------------------------
-    Shader shader("normal_mapping.vert", "normal_mapping.frag");
+    Shader shader("parallax_mapping.vert", "parallax_mapping.frag");
 
     // load textures
     // -------------
-    uint32_t diffuseMap = loadTexture("resources/brickwall.jpg");
-    uint32_t normalMap = loadTexture("resources/brickwall_normal.jpg");
+    uint32_t diffuseMap = loadTexture("resources/bricks2.jpg");
+    uint32_t normalMap = loadTexture("resources/bricks2_normal.jpg");
+    uint32_t heightMap = loadTexture("resources/bricks2_disp.jpg");
 
     // shader configuration
     // --------------------
     shader.use();
     shader.setInt("diffuseMap", 0);
     shader.setInt("normalMap", 1);
+    shader.setInt("depthMap", 2);
     // lighting info
     // -------------
     glm::vec3 lightPos(0.5f, 1.0f, 0.3f);
@@ -118,31 +119,32 @@ int main()
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
-        //configure view/projection matrices 
+        //configure view/projection matrices
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = camera.GetViewMatrix();
-        shader.use();
         shader.setMat4("projection", projection);
         shader.setMat4("view", view);
-        //render normal-mapped quad
+        //render parallax-mapped quad
         glm::mat4 model = glm::mat4(1.0f);
-        model = glm::rotate(model, glm::radians((float)glfwGetTime() * -10.0f), glm::normalize(glm::vec3(1.0f, 0.0f, 1.0f)));   //rotate the quad to show normal mapping from multiple directions
+        model = glm::rotate(model, glm::radians((float)glfwGetTime() * -10.0f), glm::normalize(glm::vec3(1.0f, 0.0f, 1.0f))); //rotate the quad to show the parallax mapping for multiple directions
         shader.setMat4("model", model);
         shader.setVec3("viewPos", camera.Position);
         shader.setVec3("lightPos", lightPos);
+        shader.setFloat("heightScale", heightScale);    //adjust with Q and E keys
+        std::cout << heightScale << std::endl;
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, diffuseMap);
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, normalMap);
+        glActiveTexture(GL_TEXTURE2);
+        glBindTexture(GL_TEXTURE_2D, heightMap);
         renderQuad();
 
-        //render light source (simply re-renders a smaller plane at light's position for debugging/visualization)
+        //render light source (simply re-renders a smaller plane at the light's position for debugging/visualization)
         model = glm::mat4(1.0f);
         model = glm::translate(model, lightPos);
         model = glm::scale(model, glm::vec3(0.1f));
         shader.setMat4("model", model);
-        renderQuad();
-
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
         glfwSwapBuffers(window);
@@ -258,15 +260,19 @@ void processInput(GLFWwindow* window)
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         camera.ProcessKeyboard(RIGHT, deltaTime);
 
-    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS && !shadowsKeyPressed)
+    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
     {
-        shadows = !shadows;
-        shadowsKeyPressed = true;
+        if (heightScale > 0.0f)
+            heightScale -= 0.0005f;
+        else
+            heightScale = 0.0f;
     }
-
-    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_RELEASE)
+    else if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
     {
-        shadowsKeyPressed = false;
+        if (heightScale < 1.0f)
+            heightScale += 0.0005f;
+        else
+            heightScale = 1.0f;
     }
 }
 

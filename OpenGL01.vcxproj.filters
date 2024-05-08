@@ -123,5 +123,7 @@
     <None Include="point_shadows_depth.frag" />
     <None Include="normal_mapping.vert" />
     <None Include="normal_mapping.frag" />
+    <None Include="parallax_mapping.vert" />
+    <None Include="parallax_mapping.frag" />
   </ItemGroup>
 </Project>

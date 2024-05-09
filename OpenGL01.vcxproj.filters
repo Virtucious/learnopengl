@@ -125,5 +125,9 @@
     <None Include="normal_mapping.frag" />
     <None Include="parallax_mapping.vert" />
     <None Include="parallax_mapping.frag" />
+    <None Include="lighting.vert" />
+    <None Include="lighting.frag" />
+    <None Include="hdr.vert" />
+    <None Include="hdr.frag" />
   </ItemGroup>
 </Project>

@@ -175,7 +175,13 @@
     <None Include="asteroid.vert" />
     <None Include="blending.frag" />
     <None Include="blending.vert" />
+    <None Include="bloom.frag" />
+    <None Include="bloom.vert" />
+    <None Include="bloomFinal.frag" />
+    <None Include="bloomFinal.vert" />
     <None Include="blue.frag" />
+    <None Include="blur.frag" />
+    <None Include="blur.vert" />
     <None Include="debug_quad.vert" />
     <None Include="debug_quad_depth.frag" />
     <None Include="default.frag" />
@@ -192,6 +198,7 @@
     <None Include="hdr.vert" />
     <None Include="instancing.frag" />
     <None Include="instancing.vert" />
+    <None Include="lightBox.frag" />
     <None Include="lighting.frag" />
     <None Include="lighting.vert" />
     <None Include="lightingCubeShader.frag" />

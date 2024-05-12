@@ -129,5 +129,12 @@
     <None Include="lighting.frag" />
     <None Include="hdr.vert" />
     <None Include="hdr.frag" />
+    <None Include="bloom.vert" />
+    <None Include="bloom.frag" />
+    <None Include="lightBox.frag" />
+    <None Include="blur.vert" />
+    <None Include="blur.frag" />
+    <None Include="bloomFinal.vert" />
+    <None Include="bloomFinal.frag" />
   </ItemGroup>
 </Project>

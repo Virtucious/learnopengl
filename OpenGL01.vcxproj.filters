@@ -136,5 +136,11 @@
     <None Include="blur.frag" />
     <None Include="bloomFinal.vert" />
     <None Include="bloomFinal.frag" />
+    <None Include="buffer.vert" />
+    <None Include="buffer.frag" />
+    <None Include="deferredShading.vert" />
+    <None Include="deferredShading.frag" />
+    <None Include="deferredLightBox.vert" />
+    <None Include="deferredLightBox.frag" />
   </ItemGroup>
 </Project>

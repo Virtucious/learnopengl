@@ -182,10 +182,16 @@
     <None Include="blue.frag" />
     <None Include="blur.frag" />
     <None Include="blur.vert" />
+    <None Include="buffer.frag" />
+    <None Include="buffer.vert" />
     <None Include="debug_quad.vert" />
     <None Include="debug_quad_depth.frag" />
     <None Include="default.frag" />
     <None Include="default.vert" />
+    <None Include="deferredLightBox.frag" />
+    <None Include="deferredLightBox.vert" />
+    <None Include="deferredShading.frag" />
+    <None Include="deferredShading.vert" />
     <None Include="frameBuffer.frag" />
     <None Include="frameBuffer.vert" />
     <None Include="frameBufferScreen.frag" />

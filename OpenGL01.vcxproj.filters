@@ -142,5 +142,11 @@
     <None Include="deferredShading.frag" />
     <None Include="deferredLightBox.vert" />
     <None Include="deferredLightBox.frag" />
+    <None Include="ssaoGeometry.vert" />
+    <None Include="ssaoGeometry.frag" />
+    <None Include="ssao.vert" />
+    <None Include="ssaoLighting.frag" />
+    <None Include="ssao.frag" />
+    <None Include="ssaoBlur.frag" />
   </ItemGroup>
 </Project>

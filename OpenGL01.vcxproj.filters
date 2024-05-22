@@ -148,5 +148,7 @@
     <None Include="ssaoLighting.frag" />
     <None Include="ssao.frag" />
     <None Include="ssaoBlur.frag" />
+    <None Include="pbr.vert" />
+    <None Include="pbr.frag" />
   </ItemGroup>
 </Project>

@@ -220,6 +220,8 @@
     <None Include="normal_mapping.vert" />
     <None Include="parallax_mapping.frag" />
     <None Include="parallax_mapping.vert" />
+    <None Include="pbr.frag" />
+    <None Include="pbr.vert" />
     <None Include="planet.frag" />
     <None Include="planet.vert" />
     <None Include="point_shadows.frag" />
